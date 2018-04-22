@@ -20,6 +20,7 @@ class MainWindow(Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(dialog)
 
+
         # Article scroll area init
         self.articleList = []
         self.articleGBox, self.articleGLayout = self.InitArticleScrollarea()
@@ -287,6 +288,8 @@ if (__name__ == '__main__'):
     app = QtWidgets.QApplication(sys.argv)
     window = QtWidgets.QMainWindow()
     window.setWindowTitle('News')
+    # window.setWindowIcon(QtGui.QIcon('logo.png'))
+    window.setWindowIcon(QtGui.QIcon('logo.png'))
 
     prog = MainWindow(window)
     window.show() # Actually show the window
