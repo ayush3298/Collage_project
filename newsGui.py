@@ -54,7 +54,7 @@ class MainWindow(Ui_MainWindow):
         self.InsertSources(jsonRes=self.LoadSources(sourcesUrl="https://newsapi.org/v1/sources?language=en").json())
 
         # Get apikey
-        # self.apiKey = 'd841acade6534c719119df76e5a42056'
+      
         self.apiKey = self.GetApiKey('api.txt')
 
         # Event handler init
