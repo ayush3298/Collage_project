@@ -1,13 +1,22 @@
 #!/bin/python3
 
+######################################################################
+# Developer :     Ayush Bairagi
+# E-mail:         abairagi311@gmail.com
+# Github profile: github.com/ayush3298
+# project:
+# ####################################################################
+
 # Internal
 import sys, os
 import functools
 
 # External
 import requests
+from PyQt5.QtWidgets import QMessageBox
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 
 # UI Files
 from mainUI import Ui_MainWindow
@@ -18,6 +27,12 @@ class MainWindow(Ui_MainWindow):
     # UI init
     def __init__(self, dialog):
         Ui_MainWindow.__init__(self)
+        # try:
+        #     requests.get('https://www.google.com')
+        #     print('google')
+        # except:
+        #     self.DisplayMessagebox(title='Cant Connect',text='please check your internet connection')
+        #     exit()
         self.setupUi(dialog)
 
 
@@ -39,9 +54,11 @@ class MainWindow(Ui_MainWindow):
         self.InsertSources(jsonRes=self.LoadSources(sourcesUrl="https://newsapi.org/v1/sources?language=en").json())
 
         # Get apikey
-        self.apiKey = 'd841acade6534c719119df76e5a42056'
+        # self.apiKey = 'd841acade6534c719119df76e5a42056'
+        self.apiKey = self.GetApiKey('api.txt')
 
         # Event handler init
+        self.MainPage()
         self.InputManager()
 
     # Handles all GUI events on MainWindow static widget static widgetss
@@ -56,6 +73,12 @@ class MainWindow(Ui_MainWindow):
         self.followBtn.clicked.connect(self.FollowCurrent)
 
     # Reload all articles from the current source
+    def MainPage(self):
+        self.InsertArticles(jsonRes=self.LoadArticlesBy(
+            apiUrl="https://newsapi.org/v2/top-headlines?country=in",
+            source='',
+            apiKey=self.apiKey
+        ).json())
     def ReloadArticles(self):
         if (len(self.currentSourceId) > 0):
             self.InsertArticles(jsonRes=self.LoadArticlesBy(
@@ -215,15 +238,29 @@ class MainWindow(Ui_MainWindow):
         for article in jsonRes['articles']:
             readmoreLabel = QtWidgets.QLabel("<a href='" + article['url']  + "'>Read more.</a>")
             readmoreLabel.linkActivated.connect(self.OpenLink)
+            if article['author'] is not None:
+                try:
+                    self.articleList.append([
+                        # QtWidgets.QLabel('Source: ' + article['source']['name']),
+
+                    ])
+                except:pass
+                try:
+
         
             # Create articleList, this is the list where all elements are loaded from
-            self.articleList.append([
-                QtWidgets.QLabel(article['title']),
-                QtWidgets.QLabel(article['description']),
-                readmoreLabel,
-                QtWidgets.QLabel()
-                ])
-            self.UpdateScrollarea()
+                    self.articleList.append([
+                        #QtWidgets.QLabel('Source: ' + article['source']['name']),
+                        QtWidgets.QLabel('Author: '+article['author']),
+                        QtWidgets.QLabel('Title: '+article['title']).setFont(QFont('Arial', 20)),
+                        QtWidgets.QLabel('Published At: '+article['publishedAt']),
+                        QtWidgets.QLabel(article['description']),
+                        readmoreLabel,
+                        QtWidgets.QLabel('-'*160),
+                        QtWidgets.QLabel()
+                        ])
+                    self.UpdateScrollarea()
+                except:pass
 
     # Insert sources using the sourceList
     def UpdateSourcesScrollarea(self):
@@ -231,6 +268,11 @@ class MainWindow(Ui_MainWindow):
         horiLayout.addWidget(self.sourceList[len(self.sourceList) - 1])
 
         self.sourceGLayout.addRow(horiLayout)
+
+    def GetImage(self,url):
+        d = requests.get(url).read()
+
+        return d
 
     # Loads all sources from the given URL, returns a respons object (None if status_code != 200)
     def LoadSources(self, sourcesUrl):
@@ -288,10 +330,17 @@ if (__name__ == '__main__'):
     app = QtWidgets.QApplication(sys.argv)
     window = QtWidgets.QMainWindow()
     window.setWindowTitle('News')
-    # window.setWindowIcon(QtGui.QIcon('logo.png'))
     window.setWindowIcon(QtGui.QIcon('logo.png'))
-
     prog = MainWindow(window)
-    window.show() # Actually show the window
+    # try:
+    #     requests.get('https://www.google.com')
+    #     print('google')
+    # except:
+    #     self.DisplayMessagebox(title='Cant Connect',text='please check your internet connection')
+    #     exit()
 
+    window.show()  # Actually show the window
     sys.exit(app.exec_())
+
+
+
