@@ -5,6 +5,12 @@
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
+######################################################################
+# Developer :     Ayush Bairagi
+# E-mail:         abairagi311@gmail.com
+# Github profile: github.com/ayush3298
+# project:
+# ####################################################################
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -52,11 +58,11 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.refreshBtn.sizePolicy().hasHeightForWidth())
         self.refreshBtn.setSizePolicy(sizePolicy)
-        self.refreshBtn.setToolTip("")
+        self.refreshBtn.setToolTip("Refrash article")
         self.refreshBtn.setWhatsThis("")
         self.refreshBtn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.refreshBtn.setIcon(icon)
         self.refreshBtn.setIconSize(QtCore.QSize(18, 18))
         self.refreshBtn.setCheckable(False)
